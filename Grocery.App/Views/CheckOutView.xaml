@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Grocery.App.Views.CheckOutView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Grocery.App.ViewModels"
+    Title="Afrekenen">
+
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+        <Label Text="Jouw bestelling" FontAttributes="Bold" FontSize="18" />
+
+        <CollectionView ItemsSource="{Binding Items}">
+            <CollectionView.Header>
+                <Grid Padding="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="Product" FontAttributes="Bold"/>
+                    <Label Grid.Column="1" Text="Aantal"  FontAttributes="Bold" HorizontalTextAlignment="End"/>
+                    <Label Grid.Column="2" Text="Prijs"   FontAttributes="Bold" HorizontalTextAlignment="End"/>
+                </Grid>
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Text="{Binding Product.Name}" />
+                        <Label Grid.Column="1" Text="{Binding Amount}" HorizontalOptions="End"/>
+                        <Label Grid.Column="2" Text="{Binding TotalLinePrice, StringFormat='€ {0:F2}'}" HorizontalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Totaal" FontAttributes="Bold" Grid.Column="0" HorizontalOptions="End" Margin="0,8,12,0"/>
+            <Label Text="{Binding TotalPrice, StringFormat='€ {0:F2}'}" FontAttributes="Bold" Grid.Column="1" Margin="0,8,0,0"/>
+        </Grid>
+
+        <Button Text="Betaling bevestigen" Command="{Binding ConfirmPaymentCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

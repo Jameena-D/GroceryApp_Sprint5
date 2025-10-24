@@ -24,6 +24,8 @@ namespace Grocery.App.ViewModels
         [ObservableProperty]
         string myMessage;
 
+        public decimal TotalPrice => MyGroceryListItems.Sum(i => i.TotalLinePrice);
+
         public GroceryListItemsViewModel(IGroceryListItemsService groceryListItemsService, IProductService productService, IFileSaverService fileSaverService)
         {
             _groceryListItemsService = groceryListItemsService;
@@ -37,6 +39,8 @@ namespace Grocery.App.ViewModels
             MyGroceryListItems.Clear();
             foreach (var item in _groceryListItemsService.GetAllOnGroceryListId(id)) MyGroceryListItems.Add(item);
             GetAvailableProducts();
+   
+            OnPropertyChanged(nameof(TotalPrice));
         }
 
         private void GetAvailableProducts()
@@ -67,7 +71,10 @@ namespace Grocery.App.ViewModels
             product.Stock--;
             _productService.Update(product);
             AvailableProducts.Remove(product);
+
+            MyGroceryListItems.Add(item);
             OnGroceryListChanged(GroceryList);
+            OnPropertyChanged(nameof(TotalPrice));
         }
 
         [RelayCommand]
@@ -104,6 +111,7 @@ namespace Grocery.App.ViewModels
             item.Product.Stock--;
             _productService.Update(item.Product);
             OnGroceryListChanged(GroceryList);
+            OnPropertyChanged(nameof(TotalPrice));
         }
 
         [RelayCommand]
@@ -117,6 +125,29 @@ namespace Grocery.App.ViewModels
             item.Product.Stock++;
             _productService.Update(item.Product);
             OnGroceryListChanged(GroceryList);
+            OnPropertyChanged(nameof(TotalPrice));
+        }
+
+        [RelayCommand]
+        private async Task GoToCheckout()
+        {
+            if (GroceryList == null || MyGroceryListItems.Count == 0) return;
+
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(CheckOutView),
+                    new Dictionary<string, object>
+                    {
+                        ["GroceryListId"] = GroceryList.Id,
+                        ["ItemsParam"] = MyGroceryListItems.ToList()
+                    });
+            }
+            catch (Exception ex)
+            {
+                // Checking if there are navigation errors
+                await App.Current.MainPage.DisplayAlert("Navigeren mislukt", ex.ToString(), "ok");
+            }
         }
     }
 }
+
