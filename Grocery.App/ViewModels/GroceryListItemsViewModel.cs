@@ -127,5 +127,19 @@ namespace Grocery.App.ViewModels
             OnGroceryListChanged(GroceryList);
             OnPropertyChanged(nameof(TotalPrice));
         }
+
+        [RelayCommand]
+        private async Task GoToCheckout()
+        {
+            if (GroceryList == null || MyGroceryListItems.Count == 0) return;
+
+            await Shell.Current.GoToAsync(nameof(CheckOutView),
+                new Dictionary<string, object>
+                {
+                    ["GroceryListId"] = GroceryList.Id,
+                    ["ItemsParam"] = MyGroceryListItems.ToList()
+                });
+        }
     }
 }
+

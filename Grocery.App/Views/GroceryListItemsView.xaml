@@ -91,6 +91,11 @@
                         </ContentView>
                     </CollectionView.EmptyView>
                 </CollectionView>
+                <Button Text="Afrekenen"
+                        Margin="0,12,0,0"
+                        HorizontalOptions="End"
+                        IsEnabled="{Binding MyGroceryListItems.Count, Mode=OneWay}"
+                        Command="{Binding GoToCheckoutCommand}" />
             </StackLayout>
         </Border>
         <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" x:Name="Message" Text="{Binding MyMessage}" TextColor="Red" Margin="30,0,0,10"/>

@@ -94,6 +94,9 @@
 	  <MauiXaml Update="Views\ChangeColorView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\CheckOutView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\GroceryListItemsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
