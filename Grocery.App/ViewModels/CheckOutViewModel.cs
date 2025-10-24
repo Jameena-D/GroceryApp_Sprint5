@@ -2,34 +2,33 @@
 using CommunityToolkit.Mvvm.Input;
 using Grocery.Core.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Grocery.Core.Interfaces.Repositories;
+using Grocery.Core.Interfaces.Services;
+using Microsoft.Maui.Controls;
 
 namespace Grocery.App.ViewModels
 {
-    [QueryProperty(nameof(GroceryListId), nameof(GroceryListId))]
-    [QueryProperty(nameof(ItemsParam), nameof(ItemsParam))]
-    public partial class CheckoutViewModel : ObservableObject
+    public partial class CheckoutViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
         private int groceryListId;
 
         public ObservableCollection<GroceryListItem> Items { get; } = new();
 
-        private IList<GroceryListItem> _itemsParam;
-        public IList<GroceryListItem> ItemsParam
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            get => _itemsParam;
-            set
+            if (query.TryGetValue("GroceryListId", out var idObj) && idObj is int id)
+                GroceryListId = id;
+
+            if (query.TryGetValue("ItemsParam", out var itemsObj) &&
+                itemsObj is IEnumerable<GroceryListItem> list)
             {
-                _itemsParam = value;
                 Items.Clear();
-                if (_itemsParam != null)
-                {
-                    foreach (var it in _itemsParam)
-                        Items.Add(it);
-                }
+                foreach (var it in list) Items.Add(it);
                 OnPropertyChanged(nameof(TotalPrice));
             }
         }
@@ -41,7 +40,7 @@ namespace Grocery.App.ViewModels
         {
             await App.Current.MainPage.DisplayAlert(
                 "Bestelling",
-                $"Totaal: € {TotalPrice:F2}\n(Bevestiging - demo)",
+                $"Totaal: € {TotalPrice:F2}\n(Bevestiging - test)",
                 "OK");
         }
     }

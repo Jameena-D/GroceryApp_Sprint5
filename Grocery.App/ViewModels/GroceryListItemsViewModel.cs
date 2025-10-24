@@ -133,12 +133,19 @@ namespace Grocery.App.ViewModels
         {
             if (GroceryList == null || MyGroceryListItems.Count == 0) return;
 
-            await Shell.Current.GoToAsync(nameof(CheckOutView),
-                new Dictionary<string, object>
-                {
-                    ["GroceryListId"] = GroceryList.Id,
-                    ["ItemsParam"] = MyGroceryListItems.ToList()
-                });
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(CheckOutView),
+                    new Dictionary<string, object>
+                    {
+                        ["GroceryListId"] = GroceryList.Id,
+                        ["ItemsParam"] = MyGroceryListItems.ToList()
+                    });
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Navigeren mislukt", ex.ToString(), "ok");
+            }
         }
     }
 }
