@@ -19,6 +19,7 @@ namespace Grocery.App.ViewModels
 
         public ObservableCollection<GroceryListItem> Items { get; } = new();
 
+        // This method is called when navigating to this ViewModel with query parameters. Avoids type conversion errors.
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("GroceryListId", out var idObj) && idObj is int id)
@@ -38,6 +39,7 @@ namespace Grocery.App.ViewModels
         [RelayCommand]
         private async Task ConfirmPayment()
         {
+            // To test the payment screen. No real payment integration yet.
             await App.Current.MainPage.DisplayAlert(
                 "Bestelling",
                 $"Totaal: € {TotalPrice:F2}\n(Bevestiging - test)",

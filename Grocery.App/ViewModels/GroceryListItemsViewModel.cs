@@ -144,6 +144,7 @@ namespace Grocery.App.ViewModels
             }
             catch (Exception ex)
             {
+                // Checking if there are navigation errors
                 await App.Current.MainPage.DisplayAlert("Navigeren mislukt", ex.ToString(), "ok");
             }
         }

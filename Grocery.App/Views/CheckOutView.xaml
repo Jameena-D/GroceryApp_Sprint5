@@ -35,7 +35,7 @@
 
                         <Label Grid.Column="0" Text="{Binding Product.Name}" />
                         <Label Grid.Column="1" Text="{Binding Amount}" HorizontalOptions="End"/>
-                        <Label Grid.Column="2" Text="{Binding LinePrice, StringFormat='€ {0:F2}'}" HorizontalOptions="End"/>
+                        <Label Grid.Column="2" Text="{Binding TotalLinePrice, StringFormat='€ {0:F2}'}" HorizontalOptions="End"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
